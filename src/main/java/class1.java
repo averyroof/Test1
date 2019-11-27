@@ -1,15 +1,9 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class class1 {
 
@@ -29,14 +23,33 @@ public class class1 {
     public void autoTest1() {
         MainPage mainPage = new MainPage(webDriver);
 
-        Page1 page1 = mainPage.method1();
-        page1.loginMethod();
-        page1.passwordMethod();
+        LoginPage loginPage = mainPage.method1();
+        loginPage.loginMethod();
+        loginPage.passwordMethod();
         //mainPage = page1.telephoneMethod();
-        // pam param
+
         Assert.assertEquals("rogova.nataliya-1999@yandex.ru", mainPage.myProfile());
 
         Assert.assertEquals("Мой профиль", mainPage.checkLogin());
+    }
+
+    @Test
+    public void autoTest2() {
+        MainPage mainPage2 = new MainPage(webDriver);
+
+        CityPage cityPage = mainPage2.city();
+        cityPage.enterCity();
+        cityPage.chooseCity();
+        mainPage2 = cityPage.clickButtonSubmit();
+
+        LoginPage loginPage = mainPage2.method1();
+        loginPage.loginMethod();
+        loginPage.passwordMethod();
+        //mainPage = page1.telephoneMethod();
+
+        mainPage2.moveCursorOnProfile();
+        SettingsPage page3 = mainPage2.clickButtonSettings();
+        Assert.assertEquals(page3.city(), page3.myCity());
     }
 
     @After

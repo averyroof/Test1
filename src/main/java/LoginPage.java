@@ -4,10 +4,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Page1 {
+public class LoginPage {
     WebDriver webdriver;
 
-    public Page1(WebDriver webdriver) {
+    public LoginPage(WebDriver webdriver) {
         this.webdriver = webdriver;
     }
 

@@ -2,7 +2,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -15,9 +14,9 @@ public class MainPage {
         this.webdriver = webdriver;
     }
 
-    public Page1 method1() {
+    public LoginPage method1() {
         webdriver.findElement(By.cssSelector("a._3ioN70chUh._1FEpprw_Km._3Uc73lzxcf")).click();
-        return new Page1(webdriver);
+        return new LoginPage(webdriver);
     }
 
     public String myProfile() {
@@ -38,6 +37,18 @@ public class MainPage {
     public String checkLogin() {
         WebElement webElement3 = webdriver.findElement(By.cssSelector("span.pFhTbV17qj"));
         return webElement3.getText();
+    }
+
+    public CityPage city() {
+        webdriver.findElement(By.cssSelector("span[data-auto='region-form-opener']._2XJ6yiRp5w")).click();
+        return new CityPage(webdriver);
+    }
+
+    public SettingsPage clickButtonSettings() {
+        WebElement webElement = (new WebDriverWait(webdriver, 10))
+                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("a[href='/my/settings?track=menu']")));
+        webElement.click();
+        return new SettingsPage(webdriver);
     }
 
 }

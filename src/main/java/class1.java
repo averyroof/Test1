@@ -33,7 +33,7 @@ public class class1 {
         page1.loginMethod();
         page1.passwordMethod();
         //mainPage = page1.telephoneMethod();
-
+        // pam param
         Assert.assertEquals("rogova.nataliya-1999@yandex.ru", mainPage.myProfile());
 
         Assert.assertEquals("Мой профиль", mainPage.checkLogin());

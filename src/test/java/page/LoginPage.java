@@ -1,3 +1,6 @@
+package page;
+
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,12 +14,14 @@ public class LoginPage {
         this.webdriver = webdriver;
     }
 
+    @Step("Ввод логина")
     public void loginMethod() {
         WebElement webElement = webdriver.findElement(By.cssSelector("#passp-field-login"));
         webElement.sendKeys("rogova.nataliya-1999");
         webElement.submit();
     }
 
+    @Step("Ввод пароля")
     public void passwordMethod(){
         WebElement webElement1 = (new WebDriverWait(webdriver, 10))
                 .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("#passp-field-passwd")));

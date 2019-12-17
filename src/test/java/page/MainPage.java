@@ -2,6 +2,7 @@ package page;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -19,10 +20,22 @@ public class MainPage {
 
     @Step("Переход на страницу Мой профиль")
     public LoginPage goToLoginPage() {
-        WebElement webElement = (new WebDriverWait(webdriver, 10))
-                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("a._3ioN70chUh._1FEpprw_Km._3Uc73lzxcf")));
-        (new WebDriverWait(webdriver, 10)).until(ExpectedConditions.elementToBeClickable(webElement));
-        webElement.click();
+//        WebElement webElement = (new WebDriverWait(webdriver, 10))
+//                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("div[data-apiary-widget-name=\"@marketplace/HeaderNotAuthUserBadge\"] a")));
+//        (new WebDriverWait(webdriver, 30)).until(ExpectedConditions.elementToBeClickable(webElement));
+        (new WebDriverWait(webdriver, 20)).until((ExpectedCondition<Boolean>) b -> {
+            {
+                try {
+                    b.findElement(By.cssSelector("div[data-apiary-widget-name=\"@marketplace/HeaderNotAuthUserBadge\"] a"));
+                    return true;
+                } catch (StaleElementReferenceException e) {
+                    return false;
+                }
+            }
+        });
+
+
+        webdriver.findElement(By.cssSelector("div[data-apiary-widget-name=\"@marketplace/HeaderNotAuthUserBadge\"] a")).click();
         return new LoginPage(webdriver);
     }
 
@@ -50,7 +63,7 @@ public class MainPage {
 
     @Step("Открыть окно выбора города")
     public CityPage city() {
-        webdriver.findElement(By.cssSelector("span[data-auto='region-form-opener']._2XJ6yiRp5w")).click();
+        webdriver.findElement(By.cssSelector("div[data-zone-name=\"SubHeader\"] span[data-auto='region-form-opener'] span[data-auto='region-form-opener']")).click();
         return new CityPage(webdriver);
     }
 

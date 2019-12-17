@@ -1,9 +1,8 @@
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -19,26 +18,42 @@ public class CityTest {
     private WebDriver webDriver;
     private String url;
     private Screenshots screenshots;
-    @Before
-    public void start() {
-        System.setProperty("webdriver.chrome.driver", "D:\\Program Files (x86)\\chromedriver.exe");
-        webDriver = new ChromeDriver();
-        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        webDriver.manage().window().maximize();
-        url = "https://beru.ru";
-        webDriver.get(url);
-        screenshots = new Screenshots(webDriver);
-    }
+
+    @Rule
+    public TestWatcher testWatcher = new TestWatcher() {
+
+        @Override
+        protected void failed(Throwable e, Description description) {
+            Screenshots.takesScreenshot("error");
+        }
+
+        @Override
+        protected void starting(Description description) {
+            System.setProperty("webdriver.chrome.driver", "D:\\Program Files (x86)\\chromedriver.exe");
+            webDriver = new ChromeDriver();
+            webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            webDriver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+            webDriver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+            webDriver.manage().window().maximize();
+            url = "https://beru.ru";
+            webDriver.get(url);
+            screenshots = new Screenshots(webDriver);
+        }
+
+        @Override
+        protected void finished(Description description) {
+            webDriver.close();
+        }
+    };
 
     @Test
     @DataProvider(value = {"Саратов", "Хвалынск", "Энгельс"})
     public void autoTest(String s) {
-        try {
             MainPage mainPage2 = new MainPage(webDriver);
 
             CityPage cityPage = mainPage2.city();
             cityPage.enterCity(s);
-            cityPage.chooseCity();
+            cityPage.chooseCity(s);
             mainPage2 = cityPage.clickButtonSubmit();
 
             LoginPage loginPage = mainPage2.goToLoginPage();
@@ -48,13 +63,6 @@ public class CityTest {
             mainPage2.moveCursorOnProfile();
             SettingsPage page3 = mainPage2.clickButtonSettings();
             Assert.assertEquals(page3.city(), page3.myCity());
-        }catch(Exception e) {
-            Screenshots.takesScreenshot("error");
-        }
-    }
 
-    @After
-    public void after() {
-        webDriver.close();
     }
 }

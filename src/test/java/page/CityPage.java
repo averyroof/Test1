@@ -27,8 +27,7 @@ public class CityPage {
     }
 
     @Step("Выбор города")
-    public void chooseCity() {
-        String city = "Хвалынск";
+    public void chooseCity(String city) {
         (new WebDriverWait(webdriver, 10)).until(ExpectedConditions.attributeToBe(By.cssSelector("li#react-autowhatever-region--item-0 div._229JDbp_Z8"), "innerText", city));
         webdriver.findElement(By.cssSelector("li#react-autowhatever-region--item-0 div._229JDbp_Z8")).click();
     }

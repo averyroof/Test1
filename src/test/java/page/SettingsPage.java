@@ -12,7 +12,7 @@ public class SettingsPage {
     }
 
     public String city() {
-        return webdriver.findElement(By.cssSelector("span[data-auto='region-form-opener']._2XJ6yiRp5w")).getAttribute("innerText");
+        return webdriver.findElement(By.cssSelector("div[data-zone-name=\"SubHeader\"] span[data-auto='region-form-opener'] span[data-auto='region-form-opener']")).getAttribute("innerText");
     }
 
     public String myCity() {

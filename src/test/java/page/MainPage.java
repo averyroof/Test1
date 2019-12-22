@@ -18,7 +18,7 @@ public class MainPage {
         this.webdriver = webdriver;
     }
 
-    @Step("Переход на страницу Мой профиль")
+    @Step("Переход на страницу Войти в аккаунт")
     public LoginPage goToLoginPage() {
 //        WebElement webElement = (new WebDriverWait(webdriver, 10))
 //                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("div[data-apiary-widget-name=\"@marketplace/HeaderNotAuthUserBadge\"] a")));
@@ -33,8 +33,7 @@ public class MainPage {
                 }
             }
         });
-
-
+        (new WebDriverWait(webdriver, 10)).until(ExpectedConditions.elementToBeClickable(By.cssSelector("div[data-apiary-widget-name=\"@marketplace/HeaderNotAuthUserBadge\"] a")));
         webdriver.findElement(By.cssSelector("div[data-apiary-widget-name=\"@marketplace/HeaderNotAuthUserBadge\"] a")).click();
         return new LoginPage(webdriver);
     }
@@ -50,7 +49,8 @@ public class MainPage {
     @Step("Перемещение курсора на кнопку Мой профиль")
     public void moveCursorOnProfile() {
         WebElement signInButton2 = (new WebDriverWait(webdriver, 10))
-                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("button._1FEpprw_Km")));
+                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("div[data-zone-name=\"HeaderUserBadge\"] button")));
+
         while (!webdriver.findElement(By.cssSelector("div._2SFylIV5m5 span._3l-uEDOaBN._31ia1pw_G4._3HJsMt3YC_")).isDisplayed())
             new Actions(webdriver).moveToElement(signInButton2).build().perform();
     }
@@ -78,23 +78,26 @@ public class MainPage {
     @Step("Нажатие на кнопку каталог товаров")
     public void clickCatalogProducts() {
         WebElement webElement = (new WebDriverWait(webdriver, 10))
-                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("span._3RM4_n5whA")));
+                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("div[data-zone-name = \"headerCatalog\"] button")));
         webElement.click();
     }
 
-    @Step("Перемещение курсора на кнопку каталог товаров")
+    @Step("Перемещение курсора на кнопку красота и гигиена")
     public void moveCursorOnCatalog() {
         WebElement signInButton3 = (new WebDriverWait(webdriver, 10))
-                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("a[title=\"Красота и гигиена\"] span._19FPGVzRi9")));
+                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("a[href=\"/catalog/krasota-i-gigiena-v-saratove/77088?hid=90509&track=menu\"]")));
+        (new WebDriverWait(webdriver, 10))
+                .until(ExpectedConditions.attributeToBe(By.cssSelector("a[href=\"/catalog/krasota-i-gigiena-v-saratove/77088?hid=90509&track=menu\"]"), "innerText", "Красота и гигиена"));
         do {
-            new Actions(webdriver).moveToElement(signInButton3).build().perform();
-        } while (!webdriver.findElement(By.cssSelector("a[title=\"Электрические зубные щетки\"] span._27Pcf7STDj")).isDisplayed());
+            new Actions(webdriver).moveToElement(signInButton3).build().perform(); // перемещает курсор (из текущего положения) к центру элемента
+        }
+        while (!webdriver.findElement(By.cssSelector("a[href=\"/catalog/elektricheskie-zubnye-shchetki-v-saratove/80961/list?hid=278374&track=menuleaf\"]")).isDisplayed()); // проверяет видимость элемента
     }
 
     @Step("Нажатие на кнопку Электрические зубные щетки")
     public Toothbrushes clickProduct() {
         WebElement webElement = (new WebDriverWait(webdriver, 10))
-                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("a[title=\"Электрические зубные щетки\"] span._27Pcf7STDj")));
+                .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("a[href=\"/catalog/elektricheskie-zubnye-shchetki-v-saratove/80961/list?hid=278374&track=menuleaf\"]")));
         webElement.click();
         return new Toothbrushes(webdriver);
     }

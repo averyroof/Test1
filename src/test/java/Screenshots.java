@@ -11,7 +11,7 @@ public class Screenshots {
     }
 
     @Attachment(value = "{screenshotName}", type = "image/png")
-    public static byte[] takesScreenshot(String screenshotName) {
+    public byte[] takesScreenshot(String screenshotName) {
         return ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.BYTES);
     }
 }

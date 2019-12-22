@@ -16,14 +16,15 @@ public class LoginPage {
 
     @Step("Ввод логина")
     public void loginMethod() {
-        WebElement webElement = webdriver.findElement(By.cssSelector("#passp-field-login"));
-        webElement.sendKeys("rogova.nataliya-1999");
-        webElement.submit();
+        WebElement webElement1 = (new WebDriverWait(webdriver, 30))
+            .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("#passp-field-login")));
+        webElement1.sendKeys("rogova.nataliya1999@yandex.ru");
+        webElement1.submit();
     }
 
     @Step("Ввод пароля")
     public void passwordMethod(){
-        WebElement webElement1 = (new WebDriverWait(webdriver, 10))
+        WebElement webElement1 = (new WebDriverWait(webdriver, 30))
                 .until((ExpectedCondition<WebElement>) d -> d.findElement(By.cssSelector("#passp-field-passwd")));
         webElement1.sendKeys("987820NNN");
         webElement1.submit();

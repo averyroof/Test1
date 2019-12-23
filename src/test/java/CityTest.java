@@ -19,8 +19,9 @@ import page.SettingsPage;
 
 import java.util.concurrent.TimeUnit;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(DataProviderRunner.class) // запуск нескольких тестов с помощью аннотации RunWith
 public class CityTest {
+
     private WebDriver webDriver;
     private String url;
     private Screenshots screenshots;
@@ -35,7 +36,7 @@ public class CityTest {
 
         @Override
         protected void starting(Description description) {
-            System.setProperty("webdriver.chrome.driver", "D:\\Program Files (x86)\\chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", "C:\\Users\\HP\\Desktop\\chromedriver.exe");
             webDriver = new ChromeDriver();
             webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             webDriver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
@@ -44,6 +45,7 @@ public class CityTest {
             url = "https://beru.ru";
             webDriver.get(url);
             screenshots = new Screenshots(webDriver);
+
             EventFiringWebDriver eventFiringWebDriver = new EventFiringWebDriver(webDriver);
             eventFiringWebDriver.register(new AbstractWebDriverEventListener() {
                 @Override
@@ -62,22 +64,24 @@ public class CityTest {
     };
 
     @Test
-    @DataProvider(value = {"Хвалынск", "Саратов", "Энгельс"})
+    @DataProvider(value = {"Хвалынск", "Саратов", "Энгельс"}) // позволяет запускть одни и те же тестовые методы множество раз с разными наборами данных
     public void autoTest(String s) {
-        MainPage mainPage2 = new MainPage(webDriver);
+        MainPage mainPage2 = new MainPage(webDriver); // главная страница
 
-        CityPage cityPage = mainPage2.city();
-        cityPage.enterCity(s);
-        cityPage.chooseCity(s);
-        mainPage2 = cityPage.clickButtonSubmit();
+        CityPage cityPage = mainPage2.city(); // нажатие на кнопку выбора города для перехода на страницу с вводом местоположения
+        cityPage.enterCity(s); // ввод названия данного местоположения в поле "Название населенного пункта"
+        cityPage.chooseCity(s); // выбор первого из предложенных городов в выпадающем списке как совпадающий с введеным
 
-        LoginPage loginPage = mainPage2.goToLoginPage();
-        loginPage.loginMethod();
-        loginPage.passwordMethod();
+        mainPage2 = cityPage.clickButtonSubmit(); // нажатие на кнопку "Хорошо" для подтверждения выбора и возвращения на главную страницу
 
-        mainPage2.moveCursorOnProfile();
-        SettingsPage page3 = mainPage2.clickButtonSettings();
-        Assert.assertEquals(page3.city(), page3.myCity());
+        // проверка, что значение изменилось
+        LoginPage loginPage = mainPage2.goToLoginPage(); // нажатие на кнопку "Войти в аккаунт" для перехода к окну входа в профиль или регистрации
+        loginPage.loginMethod(); // ввод логина
+        loginPage.passwordMethod(); // ввод пароля (после, будет произведен автоматический переход на главную страницу)
 
+        mainPage2.moveCursorOnProfile(); // наведения курсора на кнопку "Мой профиль" без нажатия
+
+        SettingsPage page3 = mainPage2.clickButtonSettings(); // в выпадающем меню профиля нажать на кнопку "Настройки" для перехода на страницу настроек
+        Assert.assertEquals(page3.city(), page3.myCity()); // проверка на раввенство значения полей "Ваш город" и "Город", в случае разницы тест не проходит
     }
 }
